@@ -22,7 +22,7 @@
     "agent"
   ],
   "bin": {
-    "lightscore": "./src/cli.ts"
+    "lightscore": "src/cli.ts"
   },
   "exports": "./src/index.ts",
   "files": [
