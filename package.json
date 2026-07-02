@@ -1,7 +1,7 @@
 {
   "name": "lightscore",
   "type": "module",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Lighthouse scores in your terminal, with concrete fixes for everything below 100 — and a markdown report your coding agent can act on.",
   "author": "Milind Mishra <milind.mishra4@gmail.com>",
   "license": "MIT",
