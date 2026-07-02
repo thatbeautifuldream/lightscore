@@ -22,21 +22,21 @@
     "agent"
   ],
   "bin": {
-    "lightscore": "src/cli.ts"
+    "lightscore": "dist/cli.js"
   },
-  "exports": "./src/index.ts",
+  "exports": "./dist/index.js",
   "files": [
-    "src",
+    "dist",
     "SKILL.md"
   ],
   "engines": {
     "node": ">=22.18.0"
   },
   "scripts": {
-    "check": "tsc -p tsconfig.json",
-    "smoke": "node src/cli.ts --help >/dev/null",
+    "build": "rm -rf dist && tsc -p tsconfig.json",
+    "smoke": "node dist/cli.js --help >/dev/null",
     "dev": "node src/cli.ts",
-    "prepublishOnly": "npm run check && npm run smoke"
+    "prepublishOnly": "npm run build && npm run smoke"
   },
   "dependencies": {
     "chrome-launcher": "^1.2.1",
