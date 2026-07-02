@@ -47,12 +47,12 @@ claude "fix the issues in lighthouse-report.md"
 ## Agent usage
 
 [`SKILL.md`](SKILL.md) teaches coding agents how to use lightscore, the
-audit → fix → re-audit loop, flag choices, and JSON output for parsing. It
-ships with the package; to use it as a Claude Code project skill, link it in:
+audit → fix → re-audit loop, flag choices, and JSON output for parsing.
+Install it as a skill for Claude Code (and other agents) with
+[skills.sh](https://skills.sh):
 
 ```
-mkdir -p .claude/skills/auditing-lighthouse-scores
-ln -s ../../../node_modules/lightscore/SKILL.md .claude/skills/auditing-lighthouse-scores/SKILL.md
+npx skills add thatbeautifuldream/lightscore
 ```
 
 ## Programmatic usage
