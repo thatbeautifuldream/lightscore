@@ -1,0 +1,25 @@
+{
+  "name": "lightscore",
+  "type": "module",
+  "version": "0.1.0",
+  "description": "Lighthouse scores in your terminal, with concrete fixes for everything below 100 — and a markdown report your coding agent can act on.",
+  "bin": {
+    "lightscore": "./src/cli.ts"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "node src/cli.ts"
+  },
+  "dependencies": {
+    "chrome-launcher": "^1.2.1",
+    "commander": "^15.0.0",
+    "lighthouse": "^13.4.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "typescript": "^5.7.2"
+  }
+}

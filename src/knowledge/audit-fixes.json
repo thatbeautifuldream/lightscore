@@ -1,0 +1,126 @@
+{
+  "landmark-one-main": {
+    "why": "Screen reader users rely on a <main> landmark to skip straight to page content.",
+    "fix": "Wrap the primary content in a single <main> element (not inside <header>/<footer>/<nav>)."
+  },
+  "charset": {
+    "why": "A missing/late charset declaration can cause the browser to re-parse the document or misrender text.",
+    "fix": "Add <meta charset=\"utf-8\"> as the first element inside <head>, before any other content."
+  },
+  "link-text": {
+    "why": "Generic link text (\"click here\", \"read more\") gives screen reader users and search engines no context out of page flow.",
+    "fix": "Use descriptive link text that makes sense out of context, e.g. \"Read the pricing guide\" instead of \"click here\"."
+  },
+  "render-blocking-resources": {
+    "why": "CSS/JS loaded synchronously in <head> delays first paint.",
+    "fix": "Inline critical CSS, defer/async non-critical scripts, use <link rel=\"preload\"> for fonts, split large CSS bundles per route."
+  },
+  "unused-javascript": {
+    "why": "Shipping JS the page never executes costs parse/compile time and bytes.",
+    "fix": "Code-split by route, lazy-load below-the-fold components, remove unused deps, check bundle with source-map-explorer/rollup-plugin-visualizer."
+  },
+  "unused-css-rules": {
+    "why": "Unused CSS is downloaded and parsed for nothing.",
+    "fix": "Use Tailwind/PurgeCSS content scanning, remove dead component styles, avoid importing whole icon/UI libraries' CSS."
+  },
+  "uses-responsive-images": {
+    "why": "Serving a larger image than the rendered size wastes bandwidth and delays LCP.",
+    "fix": "Use srcset/sizes or a framework's <Image> component (next/image, astro:assets) to serve device-appropriate sizes."
+  },
+  "modern-image-formats": {
+    "why": "JPEG/PNG are larger than AVIF/WebP for equivalent visual quality.",
+    "fix": "Convert hero/content images to WebP or AVIF; most image pipelines (sharp, squoosh) do this at build time."
+  },
+  "offscreen-images": {
+    "why": "Images below the fold loaded eagerly compete with critical resources.",
+    "fix": "Add loading=\"lazy\" to below-the-fold <img>, or use an Intersection Observer-based lazy loader."
+  },
+  "efficient-animated-content": {
+    "why": "Large animated GIFs are far heavier than video for the same content.",
+    "fix": "Replace GIFs with <video autoplay loop muted playsinline> using MP4/WebM."
+  },
+  "uses-text-compression": {
+    "why": "Uncompressed text assets (HTML/CSS/JS) inflate transfer size.",
+    "fix": "Enable gzip or brotli at the server/CDN (most hosts do this automatically; verify headers with curl -I --compressed)."
+  },
+  "server-response-time": {
+    "why": "Slow TTFB delays every subsequent render step.",
+    "fix": "Cache at the edge/CDN, avoid blocking work in request handlers, use static generation (SSG) instead of SSR where content doesn't need to be dynamic."
+  },
+  "redirects": {
+    "why": "Each redirect hop adds a full round trip before the real response starts.",
+    "fix": "Point links/canonical URLs directly at the final destination; fix trailing-slash or http->https redirect chains at the source."
+  },
+  "total-byte-weight": {
+    "why": "Large total page weight slows load especially on constrained networks.",
+    "fix": "Audit largest resources in the network panel; compress images, code-split JS, remove unused fonts/icon sets."
+  },
+  "dom-size": {
+    "why": "Very large DOM trees slow style/layout recalculation and increase memory.",
+    "fix": "Virtualize long lists, avoid deeply nested wrapper divs, paginate instead of rendering everything at once."
+  },
+  "largest-contentful-paint-element": {
+    "why": "Identifies which element is your LCP — usually a hero image or heading.",
+    "fix": "Preload the LCP image (<link rel=preload as=image>), avoid client-side rendering it, ensure it's not behind a lazy-load."
+  },
+  "layout-shift-elements": {
+    "why": "Elements that shift after paint hurt CLS and user experience.",
+    "fix": "Set explicit width/height (or aspect-ratio) on images/embeds/ads, reserve space for web fonts with font-display + fallback metrics, avoid inserting content above existing content."
+  },
+  "non-composited-animations": {
+    "why": "Animations that trigger layout/paint (not just transform/opacity) are janky and block the main thread.",
+    "fix": "Animate transform/opacity only; move animated elements to their own layer with will-change or transform: translateZ(0) sparingly."
+  },
+  "csp-xss": {
+    "why": "Missing/weak Content-Security-Policy leaves the site open to XSS.",
+    "fix": "Add a CSP header restricting script-src to 'self' plus explicit hosts/nonces; avoid 'unsafe-inline' where possible."
+  },
+  "is-on-https": {
+    "why": "Non-HTTPS pages fail modern security and browser feature requirements.",
+    "fix": "Serve all resources over HTTPS; most hosts (Vercel/Netlify/Cloudflare) do this by default — check for mixed-content http:// asset URLs."
+  },
+  "image-alt": {
+    "why": "Screen readers can't describe images without alt text.",
+    "fix": "Add descriptive alt on all content <img>; use alt=\"\" for purely decorative images."
+  },
+  "color-contrast": {
+    "why": "Low-contrast text is unreadable for many users.",
+    "fix": "Ensure text/background contrast ratio ≥ 4.5:1 (3:1 for large text); check with the Lighthouse-flagged elements directly."
+  },
+  "link-name": {
+    "why": "Links without discernible text are unusable for screen reader users.",
+    "fix": "Give icon-only links an aria-label or visually-hidden text; avoid \"click here\" as the only content."
+  },
+  "meta-description": {
+    "why": "Missing meta description hurts SEO snippet quality in search results.",
+    "fix": "Add a unique <meta name=\"description\"> per page summarizing its content in ~150-160 chars."
+  },
+  "document-title": {
+    "why": "A missing or generic <title> hurts SEO and browser tab identification.",
+    "fix": "Give every page a unique, descriptive <title>."
+  },
+  "hreflang": {
+    "why": "Incorrect hreflang confuses search engines about localized variants.",
+    "fix": "Ensure hreflang tags are valid ISO language/region codes and reciprocal across variants."
+  },
+  "canonical": {
+    "why": "Missing/incorrect canonical tags can cause duplicate-content SEO issues.",
+    "fix": "Add a self-referencing <link rel=\"canonical\"> per page pointing to its own preferred URL."
+  },
+  "font-display": {
+    "why": "Fonts without font-display can cause invisible text while loading (FOIT).",
+    "fix": "Add font-display: swap (or optional) in @font-face, and consider self-hosting + preloading critical fonts."
+  },
+  "third-party-summary": {
+    "why": "Third-party scripts (analytics, ads, widgets) often dominate main-thread time.",
+    "fix": "Load non-critical third parties with defer/async or after user interaction (e.g. facade pattern for embeds), audit whether each script is still needed."
+  },
+  "bootup-time": {
+    "why": "Heavy JS execution on load blocks the main thread and delays interactivity.",
+    "fix": "Reduce JS shipped (see unused-javascript), avoid large synchronous work in module top-level scope, defer non-critical hydration."
+  },
+  "mainthread-work-breakdown": {
+    "why": "Shows where main-thread time goes (script eval, style/layout, etc.) — a diagnostic, not a single fix.",
+    "fix": "Cross-reference with bootup-time and unused-javascript; the biggest bucket usually points at the fix."
+  }
+}
