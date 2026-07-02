@@ -1,63 +1,331 @@
 {
-  "landmark-one-main": {
-    "why": "Screen reader users rely on a <main> landmark to skip straight to page content.",
-    "fix": "Wrap the primary content in a single <main> element (not inside <header>/<footer>/<nav>)."
+  "accesskeys": {
+    "why": "Duplicate accesskey values make keyboard shortcuts ambiguous, so users trigger the wrong control.",
+    "fix": "Give every accesskey attribute on the page a unique value, or remove redundant accesskey attributes."
+  },
+  "aria-allowed-attr": {
+    "why": "ARIA attributes not allowed on an element's role are ignored or misread by screen readers, hiding intended state.",
+    "fix": "Remove or replace ARIA attributes that don't match the element's role (e.g. drop aria-checked from role=\"button\"; use aria-pressed instead)."
+  },
+  "aria-allowed-role": {
+    "why": "An ARIA role that isn't valid for the element it's on is ignored or misannounced by assistive tech.",
+    "fix": "Use a role permitted for that element, or switch to the native element that implies the role."
+  },
+  "aria-command-name": {
+    "why": "Buttons, links, and menuitems with no accessible name are announced only as their role, leaving screen reader users guessing.",
+    "fix": "Add inner text, aria-label, or aria-labelledby to every element with role=\"button\", \"link\", or \"menuitem\"."
+  },
+  "aria-conditional-attr": {
+    "why": "ARIA attributes used outside the conditions their role allows convey wrong or conflicting state to assistive tech.",
+    "fix": "Only use conditional ARIA attributes as the role spec allows (e.g. don't set aria-checked on a native <input type=\"checkbox\">; let the checked state speak)."
+  },
+  "aria-deprecated-role": {
+    "why": "Deprecated ARIA roles may be ignored by assistive technologies, so the element's purpose is lost.",
+    "fix": "Replace deprecated roles (e.g. role=\"directory\") with a current supported role or native HTML element."
+  },
+  "aria-dialog-name": {
+    "why": "A dialog without an accessible name gives screen reader users no context about what just opened.",
+    "fix": "Add aria-label or aria-labelledby (pointing at the dialog's heading) to elements with role=\"dialog\" or role=\"alertdialog\"."
+  },
+  "aria-hidden-body": {
+    "why": "aria-hidden=\"true\" on <body> hides the entire page from assistive technology.",
+    "fix": "Remove aria-hidden=\"true\" from the <body> element."
+  },
+  "aria-hidden-focus": {
+    "why": "Focusable elements inside aria-hidden containers can receive keyboard focus while being invisible to screen readers.",
+    "fix": "Add tabindex=\"-1\" or disabled to focusable descendants of aria-hidden=\"true\" containers, or remove aria-hidden."
+  },
+  "aria-input-field-name": {
+    "why": "ARIA input fields (combobox, listbox, searchbox, etc.) without a name are announced without any purpose.",
+    "fix": "Add aria-label or aria-labelledby to every element with an ARIA input role like combobox, listbox, or searchbox."
+  },
+  "aria-meter-name": {
+    "why": "A meter with no accessible name reads as an unlabeled value, meaningless to screen reader users.",
+    "fix": "Add aria-label or aria-labelledby to elements with role=\"meter\" describing what the value measures."
+  },
+  "aria-progressbar-name": {
+    "why": "An unnamed progressbar announces a percentage with no indication of what is progressing.",
+    "fix": "Add aria-label or aria-labelledby to elements with role=\"progressbar\"."
+  },
+  "aria-prohibited-attr": {
+    "why": "ARIA attributes prohibited on an element's role (like aria-label on generic text) are ignored, so the intended name never reaches users.",
+    "fix": "Remove prohibited attributes or add an appropriate role (e.g. don't put aria-label on a plain <span>/<div> without a role)."
+  },
+  "aria-required-attr": {
+    "why": "Roles missing their required ARIA attributes leave assistive tech without essential state like checked or value.",
+    "fix": "Add the role's required attributes (e.g. aria-checked for role=\"checkbox\", aria-valuenow for role=\"slider\")."
+  },
+  "aria-required-children": {
+    "why": "Composite roles without their required child roles break the structure screen readers use to navigate (e.g. a list with no items).",
+    "fix": "Ensure roles like list, tablist, or menu directly contain their required children (listitem, tab, menuitem)."
+  },
+  "aria-required-parent": {
+    "why": "Child roles outside their required parent (e.g. a listitem with no list) are orphaned and misannounced.",
+    "fix": "Nest roles like listitem, tab, or treeitem inside their required parent role (list, tablist, tree)."
+  },
+  "aria-roles": {
+    "why": "Invalid or misspelled role values are ignored, so the element falls back to no semantics at all.",
+    "fix": "Use only valid ARIA role names in role attributes (check spelling against the WAI-ARIA spec, e.g. role=\"button\" not role=\"buttton\")."
+  },
+  "aria-text": {
+    "why": "role=\"text\" on elements containing focusable descendants hides those controls' semantics from screen readers.",
+    "fix": "Remove role=\"text\" from elements that contain focusable or interactive children, or move the controls outside."
+  },
+  "aria-toggle-field-name": {
+    "why": "Unnamed toggle fields (checkboxes, switches, radios) announce a state with no clue what is being toggled.",
+    "fix": "Add aria-label or aria-labelledby to elements with role=\"checkbox\", \"switch\", \"radio\", or \"menuitemcheckbox\"."
+  },
+  "aria-tooltip-name": {
+    "why": "A tooltip with no accessible name provides no information, defeating its purpose for assistive tech users.",
+    "fix": "Give elements with role=\"tooltip\" inner text or an aria-label/aria-labelledby."
+  },
+  "aria-treeitem-name": {
+    "why": "Unnamed tree items make tree navigation meaningless for screen reader users.",
+    "fix": "Add inner text, aria-label, or aria-labelledby to every element with role=\"treeitem\"."
+  },
+  "aria-valid-attr": {
+    "why": "Misspelled or nonexistent ARIA attributes are ignored entirely, so the intended accessibility info never applies.",
+    "fix": "Correct ARIA attribute names to valid ones (e.g. aria-labelledby, not aria-labeledby)."
+  },
+  "aria-valid-attr-value": {
+    "why": "ARIA attributes with invalid values (e.g. aria-labelledby pointing at a missing ID) silently fail, breaking the intended semantics.",
+    "fix": "Fix ARIA attribute values: reference existing element IDs and use only allowed tokens (e.g. aria-expanded=\"true|false\")."
+  },
+  "autocomplete-valid": {
+    "why": "Invalid autocomplete values prevent browsers and assistive tech from autofilling fields users struggle to type.",
+    "fix": "Use valid autocomplete tokens from the HTML spec (e.g. autocomplete=\"email\", \"given-name\", \"postal-code\")."
+  },
+  "bf-cache": {
+    "why": "Pages blocked from the back/forward cache reload from scratch on back navigation instead of restoring instantly.",
+    "fix": "Remove unload event handlers, avoid Cache-Control: no-store on the document, and close open connections (WebSocket/IndexedDB) in pagehide."
+  },
+  "bootup-time": {
+    "why": "Heavy JS execution on load blocks the main thread and delays interactivity.",
+    "fix": "Reduce JS shipped (see unused-javascript), avoid large synchronous work in module top-level scope, defer non-critical hydration."
+  },
+  "button-name": {
+    "why": "A button with no accessible name is announced just as 'button', leaving screen reader users unable to know its action.",
+    "fix": "Add visible text inside the <button>, or aria-label/aria-labelledby (and title/alt for icon-only buttons)."
+  },
+  "bypass": {
+    "why": "Without a way to skip repeated navigation, keyboard users must tab through every header link on each page.",
+    "fix": "Add a skip link as the first focusable element (e.g. <a href=\"#main\">Skip to content</a>) or proper landmarks/headings."
+  },
+  "cache-insight": {
+    "why": "Static assets with short or missing cache lifetimes force repeat visitors to re-download unchanged files.",
+    "fix": "Serve static assets with Cache-Control: max-age=31536000, immutable and use hashed filenames so updates bust the cache."
+  },
+  "canonical": {
+    "why": "Missing/incorrect canonical tags can cause duplicate-content SEO issues.",
+    "fix": "Add a self-referencing <link rel=\"canonical\"> per page pointing to its own preferred URL."
   },
   "charset": {
     "why": "A missing/late charset declaration can cause the browser to re-parse the document or misrender text.",
     "fix": "Add <meta charset=\"utf-8\"> as the first element inside <head>, before any other content."
   },
-  "link-text": {
-    "why": "Generic link text (\"click here\", \"read more\") gives screen reader users and search engines no context out of page flow.",
-    "fix": "Use descriptive link text that makes sense out of context, e.g. \"Read the pricing guide\" instead of \"click here\"."
+  "clickjacking-mitigation": {
+    "why": "Without frame-ancestors or X-Frame-Options, attackers can embed the page in an iframe and hijack clicks.",
+    "fix": "Send Content-Security-Policy: frame-ancestors 'none' (or X-Frame-Options: DENY) unless framing is required."
   },
-  "render-blocking-resources": {
-    "why": "CSS/JS loaded synchronously in <head> delays first paint.",
-    "fix": "Inline critical CSS, defer/async non-critical scripts, use <link rel=\"preload\"> for fonts, split large CSS bundles per route."
+  "cls-culprits-insight": {
+    "why": "This pinpoints the specific elements and causes (unsized media, injected content, web fonts) behind your layout shifts.",
+    "fix": "Fix each named culprit: add dimensions to unsized media, reserve space for injected content, and preload fonts with size-adjusted fallbacks."
   },
-  "unused-javascript": {
-    "why": "Shipping JS the page never executes costs parse/compile time and bytes.",
-    "fix": "Code-split by route, lazy-load below-the-fold components, remove unused deps, check bundle with source-map-explorer/rollup-plugin-visualizer."
+  "color-contrast": {
+    "why": "Low-contrast text is unreadable for many users.",
+    "fix": "Ensure text/background contrast ratio ≥ 4.5:1 (3:1 for large text); check with the Lighthouse-flagged elements directly."
   },
-  "unused-css-rules": {
-    "why": "Unused CSS is downloaded and parsed for nothing.",
-    "fix": "Use Tailwind/PurgeCSS content scanning, remove dead component styles, avoid importing whole icon/UI libraries' CSS."
+  "crawlable-anchors": {
+    "why": "Links without a valid href (e.g. href=\"#\" or javascript:) can't be followed by crawlers, hiding linked pages from search engines.",
+    "fix": "Give every <a> a crawlable href pointing to a real URL; use <button> instead of anchors for JavaScript-only actions."
   },
-  "uses-responsive-images": {
-    "why": "Serving a larger image than the rendered size wastes bandwidth and delays LCP.",
-    "fix": "Use srcset/sizes or a framework's <Image> component (next/image, astro:assets) to serve device-appropriate sizes."
+  "csp-xss": {
+    "why": "Missing/weak Content-Security-Policy leaves the site open to XSS.",
+    "fix": "Add a CSP header restricting script-src to 'self' plus explicit hosts/nonces; avoid 'unsafe-inline' where possible."
   },
-  "modern-image-formats": {
-    "why": "JPEG/PNG are larger than AVIF/WebP for equivalent visual quality.",
-    "fix": "Convert hero/content images to WebP or AVIF; most image pipelines (sharp, squoosh) do this at build time."
+  "cumulative-layout-shift": {
+    "why": "Unexpected layout shifts move content under the user's finger, causing misclicks and a janky feel.",
+    "fix": "Set explicit width/height on images/videos/embeds, reserve space for ads and dynamic content, and use font-display: optional or size-adjusted font fallbacks."
   },
-  "offscreen-images": {
-    "why": "Images below the fold loaded eagerly compete with critical resources.",
-    "fix": "Add loading=\"lazy\" to below-the-fold <img>, or use an Intersection Observer-based lazy loader."
+  "definition-list": {
+    "why": "A malformed <dl> (containing non dt/dd children) breaks the term-definition pairing screen readers announce.",
+    "fix": "Ensure <dl> contains only properly ordered <dt>/<dd> pairs (optionally wrapped in <div>), with no other direct children."
+  },
+  "deprecations": {
+    "why": "Deprecated APIs will eventually be removed from browsers, so pages relying on them risk breaking without warning.",
+    "fix": "Check the DevTools Issues panel for each deprecation warning and migrate to the recommended replacement API."
+  },
+  "dlitem": {
+    "why": "<dt>/<dd> elements outside a <dl> lose their term-definition semantics for assistive tech.",
+    "fix": "Wrap every <dt> and <dd> in a parent <dl> element."
+  },
+  "doctype": {
+    "why": "A missing or malformed doctype triggers quirks mode, causing inconsistent layout and rendering across browsers.",
+    "fix": "Add <!DOCTYPE html> as the very first line of the document, before the <html> tag."
+  },
+  "document-latency-insight": {
+    "why": "Redirects, a slow server response, or an uncompressed HTML document delay every other resource on the page.",
+    "fix": "Eliminate redirects to the main document, get server response under 600 ms (caching/CDN), and enable gzip or brotli compression on the HTML."
+  },
+  "document-title": {
+    "why": "A missing or generic <title> hurts SEO and browser tab identification.",
+    "fix": "Give every page a unique, descriptive <title>."
+  },
+  "dom-size": {
+    "why": "Very large DOM trees slow style/layout recalculation and increase memory.",
+    "fix": "Virtualize long lists, avoid deeply nested wrapper divs, paginate instead of rendering everything at once."
+  },
+  "dom-size-insight": {
+    "why": "A large DOM increases memory, slows style/layout calculations, and makes every interaction more expensive.",
+    "fix": "Reduce total nodes (aim under ~1,500), flatten deep nesting, and virtualize long lists instead of rendering them fully."
+  },
+  "duplicate-id-aria": {
+    "why": "Duplicate IDs referenced by ARIA attributes make aria-labelledby/aria-describedby resolve to the wrong element.",
+    "fix": "Make every ID referenced by ARIA attributes (aria-labelledby, aria-controls, etc.) unique on the page."
+  },
+  "duplicated-javascript-insight": {
+    "why": "The same modules bundled into multiple chunks ship redundant bytes that slow download and parse.",
+    "fix": "Deduplicate dependencies (npm dedupe) and configure your bundler's splitChunks/manualChunks to share common modules across bundles."
   },
   "efficient-animated-content": {
     "why": "Large animated GIFs are far heavier than video for the same content.",
     "fix": "Replace GIFs with <video autoplay loop muted playsinline> using MP4/WebM."
   },
-  "uses-text-compression": {
-    "why": "Uncompressed text assets (HTML/CSS/JS) inflate transfer size.",
-    "fix": "Enable gzip or brotli at the server/CDN (most hosts do this automatically; verify headers with curl -I --compressed)."
+  "empty-heading": {
+    "why": "Empty headings confuse screen reader navigation — users jump to a heading and hear nothing.",
+    "fix": "Add text to the heading or remove the empty <h1>-<h6> element entirely."
   },
-  "server-response-time": {
-    "why": "Slow TTFB delays every subsequent render step.",
-    "fix": "Cache at the edge/CDN, avoid blocking work in request handlers, use static generation (SSG) instead of SSR where content doesn't need to be dynamic."
+  "errors-in-console": {
+    "why": "Console errors indicate unresolved problems like failed requests or broken JavaScript that can degrade the user experience.",
+    "fix": "Open DevTools, reproduce each logged error, and fix its root cause (broken resources, uncaught exceptions, blocked requests)."
   },
-  "redirects": {
-    "why": "Each redirect hop adds a full round trip before the real response starts.",
-    "fix": "Point links/canonical URLs directly at the final destination; fix trailing-slash or http->https redirect chains at the source."
+  "first-contentful-paint": {
+    "why": "A slow FCP means users stare at a blank screen with no sign the page is loading.",
+    "fix": "Eliminate render-blocking CSS/JS, inline critical CSS, cut server response time (TTFB), and use font-display: swap so text paints immediately."
   },
-  "total-byte-weight": {
-    "why": "Large total page weight slows load especially on constrained networks.",
-    "fix": "Audit largest resources in the network panel; compress images, code-split JS, remove unused fonts/icon sets."
+  "font-display": {
+    "why": "Fonts without font-display can cause invisible text while loading (FOIT).",
+    "fix": "Add font-display: swap (or optional) in @font-face, and consider self-hosting + preloading critical fonts."
   },
-  "dom-size": {
-    "why": "Very large DOM trees slow style/layout recalculation and increase memory.",
-    "fix": "Virtualize long lists, avoid deeply nested wrapper divs, paginate instead of rendering everything at once."
+  "font-display-insight": {
+    "why": "Fonts without font-display keep text invisible while they load, delaying FCP and LCP.",
+    "fix": "Add font-display: swap (or optional) to every @font-face, and preload critical font files."
+  },
+  "forced-reflow-insight": {
+    "why": "JS that reads layout properties after writing styles forces synchronous reflows that block the main thread.",
+    "fix": "Batch DOM reads before writes, avoid querying offsetHeight/getBoundingClientRect inside loops, and use requestAnimationFrame to schedule style changes."
+  },
+  "form-field-multiple-labels": {
+    "why": "Multiple labels on one form field cause screen readers to announce inconsistent or unexpected names.",
+    "fix": "Use exactly one <label for> per field; merge extra text into that label or use aria-describedby for hints."
+  },
+  "frame-title": {
+    "why": "Frames without titles force screen reader users to enter them blindly to learn their content.",
+    "fix": "Add a descriptive title attribute to every <iframe> and <frame> (e.g. title=\"Payment form\")."
+  },
+  "geolocation-on-start": {
+    "why": "Requesting geolocation on page load without context confuses users and leads most to deny the permission.",
+    "fix": "Only call navigator.geolocation after a user gesture (e.g. clicking a 'Use my location' button) that explains why it's needed."
+  },
+  "has-hsts": {
+    "why": "Without HSTS, first requests can go over HTTP, leaving users open to protocol-downgrade attacks.",
+    "fix": "Send Strict-Transport-Security with a long max-age (e.g. max-age=31536000; includeSubDomains) on HTTPS responses."
+  },
+  "heading-order": {
+    "why": "Skipped heading levels (h2 to h4) break the outline screen reader users navigate by.",
+    "fix": "Use heading levels in sequential order (h1 → h2 → h3) without skipping; style with CSS, not heading level."
+  },
+  "hreflang": {
+    "why": "Incorrect hreflang confuses search engines about localized variants.",
+    "fix": "Ensure hreflang tags are valid ISO language/region codes and reciprocal across variants."
+  },
+  "html-has-lang": {
+    "why": "Without a lang attribute, screen readers guess the language and may mispronounce the whole page.",
+    "fix": "Add a lang attribute to the root element, e.g. <html lang=\"en\">."
+  },
+  "html-lang-valid": {
+    "why": "An invalid lang value makes screen readers fall back to a default voice, mispronouncing content.",
+    "fix": "Set <html lang> to a valid BCP 47 code (e.g. lang=\"en\" or lang=\"en-US\", not lang=\"english\")."
+  },
+  "html-xml-lang-mismatch": {
+    "why": "When lang and xml:lang disagree, assistive technologies may pick the wrong language for pronunciation.",
+    "fix": "Make the lang and xml:lang attributes on <html> specify the same base language."
+  },
+  "http-status-code": {
+    "why": "Pages returning 4xx/5xx status codes may be dropped from search indexes since crawlers treat them as unavailable.",
+    "fix": "Fix the server or routing so the page returns a 2xx status code (or a proper 301 redirect to its canonical URL)."
+  },
+  "identical-links-same-purpose": {
+    "why": "Links with identical text pointing to different URLs are indistinguishable to screen reader users.",
+    "fix": "Give links with different destinations distinct accessible names (text, aria-label, or visually hidden text)."
+  },
+  "image-alt": {
+    "why": "Screen readers can't describe images without alt text.",
+    "fix": "Add descriptive alt on all content <img>; use alt=\"\" for purely decorative images."
+  },
+  "image-aspect-ratio": {
+    "why": "Rendering images at an aspect ratio different from their natural one makes them appear stretched or squashed.",
+    "fix": "Set width/height (or CSS aspect-ratio / object-fit) so each image's displayed dimensions match its natural aspect ratio."
+  },
+  "image-delivery-insight": {
+    "why": "Oversized, poorly compressed, or legacy-format images waste bandwidth and delay LCP.",
+    "fix": "Serve images in AVIF/WebP, resize to actual display dimensions with srcset, raise compression, and lazy-load offscreen images."
+  },
+  "image-redundant-alt": {
+    "why": "Alt text repeating adjacent text makes screen readers announce the same content twice.",
+    "fix": "Use alt=\"\" for decorative/redundant images, or make the alt text add information the surrounding text lacks."
+  },
+  "image-size-responsive": {
+    "why": "Images served below their displayed size appear blurry, especially on high-DPI screens.",
+    "fix": "Serve images at least as large as their rendered size times the device pixel ratio, using srcset/sizes for responsive variants."
+  },
+  "inp-breakdown-insight": {
+    "why": "This breaks the slowest interaction into input delay, processing, and presentation so you can see what to fix.",
+    "fix": "Cut the longest phase: reduce input delay by breaking up long tasks, shorten processing in event handlers, and shrink presentation delay by reducing DOM/rendering work."
+  },
+  "input-button-name": {
+    "why": "An input button without discernible text gives screen reader users no idea what it does.",
+    "fix": "Add a value attribute to <input type=\"button\">/<input type=\"submit\">, or an aria-label."
+  },
+  "input-image-alt": {
+    "why": "Image buttons without alt text are announced as 'unlabeled button', hiding their action.",
+    "fix": "Add a descriptive alt attribute to every <input type=\"image\"> (e.g. alt=\"Search\")."
+  },
+  "inspector-issues": {
+    "why": "Issues logged to the DevTools Issues panel (mixed content, CORS failures, cookie problems) signal real breakage or security risks.",
+    "fix": "Open the DevTools Issues panel and resolve each reported issue, such as upgrading mixed-content URLs to HTTPS and fixing CORS headers."
+  },
+  "interaction-to-next-paint": {
+    "why": "A high INP means taps and clicks feel laggy because the next frame after interaction is delayed.",
+    "fix": "Break up long tasks, debounce heavy input handlers, yield to the main thread (scheduler.yield/setTimeout), and reduce DOM size and rendering work per interaction."
+  },
+  "interactive": {
+    "why": "A late Time to Interactive means the page looks ready but ignores or lags on user input.",
+    "fix": "Reduce JavaScript payload via code-splitting and tree-shaking, defer third-party scripts, and minimize main-thread work during load."
+  },
+  "is-crawlable": {
+    "why": "A noindex directive or blocking robots rule prevents search engines from indexing the page, so it can't appear in results.",
+    "fix": "Remove noindex/none from the robots meta tag and X-Robots-Tag header (and unblock the URL in robots.txt) for pages that should rank."
+  },
+  "is-on-https": {
+    "why": "Non-HTTPS pages fail modern security and browser feature requirements.",
+    "fix": "Serve all resources over HTTPS; most hosts (Vercel/Netlify/Cloudflare) do this by default — check for mixed-content http:// asset URLs."
+  },
+  "label": {
+    "why": "Unlabeled form fields are announced without purpose, making forms unusable for screen reader users.",
+    "fix": "Associate each input with a <label for=\"id\"> element, or add aria-label/aria-labelledby."
+  },
+  "label-content-name-mismatch": {
+    "why": "Voice-control users say the visible label; if the accessible name differs, the command fails.",
+    "fix": "Make the accessible name (aria-label/aria-labelledby) start with the element's visible text."
+  },
+  "landmark-one-main": {
+    "why": "Screen reader users rely on a <main> landmark to skip straight to page content.",
+    "fix": "Wrap the primary content in a single <main> element (not inside <header>/<footer>/<nav>)."
+  },
+  "largest-contentful-paint": {
+    "why": "A slow LCP means the main content (hero image/heading) takes too long to appear, so the page feels slow.",
+    "fix": "Preload the hero image (fetchpriority=\"high\"), cut server response time, remove render-blocking CSS/JS, and serve the LCP image compressed in AVIF/WebP from a CDN."
   },
   "largest-contentful-paint-element": {
     "why": "Identifies which element is your LCP — usually a hero image or heading.",
@@ -67,60 +335,240 @@
     "why": "Elements that shift after paint hurt CLS and user experience.",
     "fix": "Set explicit width/height (or aspect-ratio) on images/embeds/ads, reserve space for web fonts with font-display + fallback metrics, avoid inserting content above existing content."
   },
-  "non-composited-animations": {
-    "why": "Animations that trigger layout/paint (not just transform/opacity) are janky and block the main thread.",
-    "fix": "Animate transform/opacity only; move animated elements to their own layer with will-change or transform: translateZ(0) sparingly."
+  "layout-shifts": {
+    "why": "The largest layout shifts identify exactly which elements jumped and disrupted the user.",
+    "fix": "For each listed shift, reserve space for the culprit element: size images/embeds, preload web fonts, and insert dynamic content below the viewport or into pre-allocated containers."
   },
-  "csp-xss": {
-    "why": "Missing/weak Content-Security-Policy leaves the site open to XSS.",
-    "fix": "Add a CSP header restricting script-src to 'self' plus explicit hosts/nonces; avoid 'unsafe-inline' where possible."
+  "lcp-breakdown-insight": {
+    "why": "This splits LCP into TTFB, load delay, load time, and render delay so you can target the slowest phase.",
+    "fix": "Attack the longest phase: cut TTFB with caching/CDN, remove load delay by preloading the LCP image, speed load with better compression, and cut render delay by removing blocking CSS/JS."
   },
-  "is-on-https": {
-    "why": "Non-HTTPS pages fail modern security and browser feature requirements.",
-    "fix": "Serve all resources over HTTPS; most hosts (Vercel/Netlify/Cloudflare) do this by default — check for mixed-content http:// asset URLs."
+  "lcp-discovery-insight": {
+    "why": "If the browser discovers the LCP image late (lazy-loaded or hidden from the preload scanner), LCP starts late no matter how fast it downloads.",
+    "fix": "Put the LCP image in the initial HTML with fetchpriority=\"high\", remove loading=\"lazy\" from it, and add <link rel=\"preload\"> if it's referenced from CSS or JS."
   },
-  "image-alt": {
-    "why": "Screen readers can't describe images without alt text.",
-    "fix": "Add descriptive alt on all content <img>; use alt=\"\" for purely decorative images."
+  "legacy-javascript-insight": {
+    "why": "Polyfills and transforms for old browsers ship dead weight to the modern browsers most users have.",
+    "fix": "Target modern browsers in your build (browserslist/esbuild target es2020+), drop unneeded core-js polyfills, and use module/nomodule or serve modern-only bundles."
   },
-  "color-contrast": {
-    "why": "Low-contrast text is unreadable for many users.",
-    "fix": "Ensure text/background contrast ratio ≥ 4.5:1 (3:1 for large text); check with the Lighthouse-flagged elements directly."
+  "link-in-text-block": {
+    "why": "Links distinguished only by color are invisible to low-vision and colorblind users within body text.",
+    "fix": "Keep underlines on in-paragraph links, or ensure a 3:1 contrast ratio against surrounding text plus a non-color cue."
   },
   "link-name": {
     "why": "Links without discernible text are unusable for screen reader users.",
     "fix": "Give icon-only links an aria-label or visually-hidden text; avoid \"click here\" as the only content."
   },
+  "link-text": {
+    "why": "Generic link text (\"click here\", \"read more\") gives screen reader users and search engines no context out of page flow.",
+    "fix": "Use descriptive link text that makes sense out of context, e.g. \"Read the pricing guide\" instead of \"click here\"."
+  },
+  "list": {
+    "why": "Lists with invalid children break item counts and list navigation for screen readers.",
+    "fix": "Ensure <ul>/<ol> directly contain only <li> (plus <script>/<template>); move other markup inside the <li>s."
+  },
+  "listitem": {
+    "why": "<li> elements outside a list lose their list semantics and item position announcements.",
+    "fix": "Wrap every <li> in a parent <ul>, <ol>, or <menu>."
+  },
+  "long-tasks": {
+    "why": "Tasks over 50 ms block the main thread and delay input response, hurting TBT and INP.",
+    "fix": "Split long tasks into smaller chunks that yield to the main thread, defer non-critical work, and offload computation to Web Workers."
+  },
+  "mainthread-work-breakdown": {
+    "why": "Shows where main-thread time goes (script eval, style/layout, etc.) — a diagnostic, not a single fix.",
+    "fix": "Cross-reference with bootup-time and unused-javascript; the biggest bucket usually points at the fix."
+  },
+  "max-potential-fid": {
+    "why": "The longest main-thread task caps how badly a user's first input could be delayed.",
+    "fix": "Split the longest tasks into chunks under 50 ms, defer non-critical JS, and move expensive computation off the main thread."
+  },
   "meta-description": {
     "why": "Missing meta description hurts SEO snippet quality in search results.",
     "fix": "Add a unique <meta name=\"description\"> per page summarizing its content in ~150-160 chars."
   },
-  "document-title": {
-    "why": "A missing or generic <title> hurts SEO and browser tab identification.",
-    "fix": "Give every page a unique, descriptive <title>."
+  "meta-refresh": {
+    "why": "Timed meta refresh moves or reloads the page before users of assistive tech can finish reading.",
+    "fix": "Remove <meta http-equiv=\"refresh\">; use a user-triggered link or server-side redirect instead."
   },
-  "hreflang": {
-    "why": "Incorrect hreflang confuses search engines about localized variants.",
-    "fix": "Ensure hreflang tags are valid ISO language/region codes and reciprocal across variants."
+  "meta-viewport": {
+    "why": "user-scalable=\"no\" or a low maximum-scale blocks pinch-zoom, which low-vision users depend on.",
+    "fix": "Use <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"> without user-scalable=no or maximum-scale below 5."
   },
-  "canonical": {
-    "why": "Missing/incorrect canonical tags can cause duplicate-content SEO issues.",
-    "fix": "Add a self-referencing <link rel=\"canonical\"> per page pointing to its own preferred URL."
+  "modern-http-insight": {
+    "why": "Requests over HTTP/1.1 lose multiplexing and header compression, adding latency on multi-request origins.",
+    "fix": "Enable HTTP/2 or HTTP/3 on your server/CDN for all origins serving multiple resources."
   },
-  "font-display": {
-    "why": "Fonts without font-display can cause invisible text while loading (FOIT).",
-    "fix": "Add font-display: swap (or optional) in @font-face, and consider self-hosting + preloading critical fonts."
+  "modern-image-formats": {
+    "why": "JPEG/PNG are larger than AVIF/WebP for equivalent visual quality.",
+    "fix": "Convert hero/content images to WebP or AVIF; most image pipelines (sharp, squoosh) do this at build time."
+  },
+  "network-dependency-tree-insight": {
+    "why": "Long chains of critical requests (each waiting on the last) push out FCP and LCP.",
+    "fix": "Shorten chains by inlining critical CSS, avoiding @import and JS-injected resources, and preloading late-discovered critical assets; add preconnect for critical third-party origins."
+  },
+  "non-composited-animations": {
+    "why": "Animations that trigger layout/paint (not just transform/opacity) are janky and block the main thread.",
+    "fix": "Animate transform/opacity only; move animated elements to their own layer with will-change or transform: translateZ(0) sparingly."
+  },
+  "notification-on-start": {
+    "why": "Asking for notification permission on page load without context annoys users and usually gets denied or blocked.",
+    "fix": "Request Notification.requestPermission() only in response to a user action tied to a clear benefit, not on load."
+  },
+  "object-alt": {
+    "why": "<object> embeds without alternate text are silent to screen readers, hiding the embedded content.",
+    "fix": "Add inner fallback text, aria-label, or title to every <object> element."
+  },
+  "offscreen-images": {
+    "why": "Images below the fold loaded eagerly compete with critical resources.",
+    "fix": "Add loading=\"lazy\" to below-the-fold <img>, or use an Intersection Observer-based lazy loader."
+  },
+  "origin-isolation": {
+    "why": "Without cross-origin isolation headers, the page is exposed to cross-origin attacks like Spectre-style leaks.",
+    "fix": "Send Cross-Origin-Opener-Policy: same-origin (and COEP where needed) to isolate the browsing context."
+  },
+  "paste-preventing-inputs": {
+    "why": "Blocking paste in inputs breaks password managers and forces error-prone retyping, hurting usability and security.",
+    "fix": "Remove preventDefault() from paste event handlers (and any onpaste=\"return false\") on input fields."
+  },
+  "presentation-role-conflict": {
+    "why": "role=\"presentation\"/\"none\" on elements that are focusable or carry ARIA attributes creates conflicting, unpredictable semantics.",
+    "fix": "Remove role=\"presentation\"/\"none\" from interactive elements, or drop the conflicting tabindex/ARIA attributes."
+  },
+  "redirects": {
+    "why": "Each redirect hop adds a full round trip before the real response starts.",
+    "fix": "Point links/canonical URLs directly at the final destination; fix trailing-slash or http->https redirect chains at the source."
+  },
+  "redirects-http": {
+    "why": "Serving pages over HTTP or not redirecting to HTTPS leaves users on an insecure connection vulnerable to interception.",
+    "fix": "Configure the server to 301-redirect all HTTP requests to HTTPS, and consider adding an HSTS header."
+  },
+  "render-blocking-insight": {
+    "why": "Stylesheets and synchronous scripts in <head> block the first paint until they download and execute.",
+    "fix": "Inline critical CSS, load the rest with media/preload tricks, and add defer or async to scripts (or move them out of <head>)."
+  },
+  "render-blocking-resources": {
+    "why": "CSS/JS loaded synchronously in <head> delays first paint.",
+    "fix": "Inline critical CSS, defer/async non-critical scripts, use <link rel=\"preload\"> for fonts, split large CSS bundles per route."
+  },
+  "robots-txt": {
+    "why": "A malformed robots.txt can be misinterpreted by crawlers, accidentally blocking pages or ignoring your crawl rules.",
+    "fix": "Validate robots.txt syntax (correct directives, one rule per line, valid user-agent groups) and fix the lines Lighthouse flags."
+  },
+  "select-name": {
+    "why": "A <select> without a name is announced only as a combobox, with no hint what it chooses.",
+    "fix": "Associate a <label for> with each <select>, or add aria-label/aria-labelledby."
+  },
+  "server-response-time": {
+    "why": "Slow TTFB delays every subsequent render step.",
+    "fix": "Cache at the edge/CDN, avoid blocking work in request handlers, use static generation (SSG) instead of SSR where content doesn't need to be dynamic."
+  },
+  "skip-link": {
+    "why": "A skip link whose target doesn't exist or isn't focusable strands keyboard users instead of skipping navigation.",
+    "fix": "Point the skip link's href at an existing ID (e.g. <main id=\"main\">) and ensure the target is focusable (add tabindex=\"-1\" if needed)."
+  },
+  "speed-index": {
+    "why": "A high Speed Index means visible content fills in slowly, so the page looks incomplete for longer.",
+    "fix": "Inline critical CSS, defer render-blocking resources and offscreen images, and minimize main-thread work during load."
+  },
+  "svg-img-alt": {
+    "why": "SVGs with role=\"img\" but no accessible name are announced as unlabeled images.",
+    "fix": "Add aria-label, aria-labelledby, or a <title> element (referenced via aria-labelledby) to <svg role=\"img\">."
+  },
+  "tabindex": {
+    "why": "tabindex values above 0 create a confusing custom tab order that jumps around the page.",
+    "fix": "Remove positive tabindex values; use only tabindex=\"0\" or \"-1\" and rely on DOM order for focus sequence."
+  },
+  "table-duplicate-name": {
+    "why": "A <caption> duplicating the table's summary attribute makes screen readers announce it twice.",
+    "fix": "Keep the <caption> and remove the duplicate summary text (or make them convey different information)."
+  },
+  "table-fake-caption": {
+    "why": "A styled cell used as a caption isn't announced as one, so screen reader users lose the table's title.",
+    "fix": "Replace the fake caption cell with a real <caption> element inside the <table>."
+  },
+  "target-size": {
+    "why": "Touch targets smaller than 24x24px (or crowded together) are hard to tap for users with motor impairments.",
+    "fix": "Make interactive elements at least 24x24 CSS pixels or add spacing/padding so targets don't overlap neighbors."
+  },
+  "td-has-header": {
+    "why": "Data cells in large tables without associated headers leave screen reader users guessing what a value means.",
+    "fix": "Add <th> elements (with scope) or headers attributes so every <td> maps to its header."
+  },
+  "td-headers-attr": {
+    "why": "headers attributes referencing IDs outside the same table associate cells with the wrong headers for screen readers.",
+    "fix": "Ensure each <td headers> lists only IDs of <th> elements within the same <table>."
+  },
+  "th-has-data-cells": {
+    "why": "Header cells that describe no data cells leave screen reader users with orphaned, meaningless headers.",
+    "fix": "Ensure every <th> (or role=\"columnheader\"/\"rowheader\") relates to actual data cells; use scope=\"col\"/\"row\" to clarify."
+  },
+  "third-parties-insight": {
+    "why": "Third-party scripts (analytics, ads, widgets) consume network and main-thread time you don't control.",
+    "fix": "Audit and remove low-value third parties, load the rest with async/defer or on interaction (facades for embeds), and set up preconnect for the essential ones."
+  },
+  "third-party-cookies": {
+    "why": "Browsers are phasing out third-party cookies, so features depending on them will silently break for users.",
+    "fix": "Remove reliance on third-party cookies or migrate to alternatives like CHIPS (partitioned cookies) or the Storage Access API."
   },
   "third-party-summary": {
     "why": "Third-party scripts (analytics, ads, widgets) often dominate main-thread time.",
     "fix": "Load non-critical third parties with defer/async or after user interaction (e.g. facade pattern for embeds), audit whether each script is still needed."
   },
-  "bootup-time": {
-    "why": "Heavy JS execution on load blocks the main thread and delays interactivity.",
-    "fix": "Reduce JS shipped (see unused-javascript), avoid large synchronous work in module top-level scope, defer non-critical hydration."
+  "total-blocking-time": {
+    "why": "Long main-thread blocks between FCP and TTI make the page unresponsive to clicks and keystrokes.",
+    "fix": "Break up long tasks, code-split and defer non-critical JavaScript, remove unused JS, and move heavy work to Web Workers."
   },
-  "mainthread-work-breakdown": {
-    "why": "Shows where main-thread time goes (script eval, style/layout, etc.) — a diagnostic, not a single fix.",
-    "fix": "Cross-reference with bootup-time and unused-javascript; the biggest bucket usually points at the fix."
+  "total-byte-weight": {
+    "why": "Large total page weight slows load especially on constrained networks.",
+    "fix": "Audit largest resources in the network panel; compress images, code-split JS, remove unused fonts/icon sets."
+  },
+  "trusted-types-xss": {
+    "why": "Without Trusted Types, any DOM sink (innerHTML etc.) is a potential DOM-based XSS entry point.",
+    "fix": "Send Content-Security-Policy: require-trusted-types-for 'script' and refactor sinks to use trusted type policies."
+  },
+  "unminified-css": {
+    "why": "Unminified CSS wastes bytes on whitespace and comments, delaying render-blocking stylesheet downloads.",
+    "fix": "Minify CSS in your build step (cssnano, esbuild, Lightning CSS) and serve the minified output with compression."
+  },
+  "unminified-javascript": {
+    "why": "Unminified JS ships extra bytes that slow download, parse, and execution.",
+    "fix": "Minify JS in your build (terser, esbuild, swc) and ensure production builds are what you deploy."
+  },
+  "unsized-images": {
+    "why": "Images without explicit dimensions cause layout shifts when they load, hurting CLS.",
+    "fix": "Add width and height attributes (or CSS aspect-ratio) to every <img> and <video> so the browser reserves space before loading."
+  },
+  "unused-css-rules": {
+    "why": "Unused CSS is downloaded and parsed for nothing.",
+    "fix": "Use Tailwind/PurgeCSS content scanning, remove dead component styles, avoid importing whole icon/UI libraries' CSS."
+  },
+  "unused-javascript": {
+    "why": "Shipping JS the page never executes costs parse/compile time and bytes.",
+    "fix": "Code-split by route, lazy-load below-the-fold components, remove unused deps, check bundle with source-map-explorer/rollup-plugin-visualizer."
+  },
+  "uses-responsive-images": {
+    "why": "Serving a larger image than the rendered size wastes bandwidth and delays LCP.",
+    "fix": "Use srcset/sizes or a framework's <Image> component (next/image, astro:assets) to serve device-appropriate sizes."
+  },
+  "uses-text-compression": {
+    "why": "Uncompressed text assets (HTML/CSS/JS) inflate transfer size.",
+    "fix": "Enable gzip or brotli at the server/CDN (most hosts do this automatically; verify headers with curl -I --compressed)."
+  },
+  "valid-lang": {
+    "why": "Invalid lang attributes on elements make screen readers mispronounce that section of content.",
+    "fix": "Use valid BCP 47 codes in every lang attribute (e.g. lang=\"fr\", not lang=\"french\")."
+  },
+  "valid-source-maps": {
+    "why": "Missing or broken source maps make production errors and Lighthouse treemaps impossible to trace to source.",
+    "fix": "Publish valid source maps for large first-party bundles (sourceMappingURL pointing at an accessible .map file)."
+  },
+  "video-caption": {
+    "why": "Videos without captions exclude deaf and hard-of-hearing users from the audio content.",
+    "fix": "Add a <track kind=\"captions\" src=\"...\" srclang=\"en\"> element inside each <video>."
+  },
+  "viewport-insight": {
+    "why": "Without a mobile viewport meta tag, browsers add a 300 ms tap delay and render a zoomed-out desktop layout.",
+    "fix": "Add <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"> to <head>."
   }
 }
