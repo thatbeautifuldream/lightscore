@@ -3,15 +3,40 @@
   "type": "module",
   "version": "0.1.0",
   "description": "Lighthouse scores in your terminal, with concrete fixes for everything below 100 — and a markdown report your coding agent can act on.",
+  "author": "Milind Mishra <milind.mishra4@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thatbeautifuldream/lightscore.git"
+  },
+  "homepage": "https://github.com/thatbeautifuldream/lightscore#readme",
+  "bugs": "https://github.com/thatbeautifuldream/lightscore/issues",
+  "keywords": [
+    "lighthouse",
+    "performance",
+    "audit",
+    "cli",
+    "accessibility",
+    "seo",
+    "web-vitals",
+    "agent"
+  ],
   "bin": {
     "lightscore": "./src/cli.ts"
   },
+  "exports": "./src/index.ts",
+  "files": [
+    "src",
+    "SKILL.md"
+  ],
   "engines": {
-    "node": ">=22.12.0"
+    "node": ">=22.18.0"
   },
   "scripts": {
-    "build": "tsc -p tsconfig.json",
-    "dev": "node src/cli.ts"
+    "check": "tsc -p tsconfig.json",
+    "smoke": "node src/cli.ts --help >/dev/null",
+    "dev": "node src/cli.ts",
+    "prepublishOnly": "npm run check && npm run smoke"
   },
   "dependencies": {
     "chrome-launcher": "^1.2.1",
