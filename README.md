@@ -25,6 +25,22 @@ performance: 100  |  accessibility: 100  |  best-practices: 100  |  seo: 100
     - network-dependency-tree-insight: 0%
 ```
 
+## Get started
+
+Install the [agent skill](https://www.skills.sh/thatbeautifuldream/lightscore)
+so your coding agent knows the whole audit → fix → re-audit loop:
+
+```
+npx skills add thatbeautifuldream/lightscore
+```
+
+Then just ask your agent to "audit localhost:3000 and fix the issues", or run
+an audit yourself:
+
+```
+npx lightscore localhost:3000
+```
+
 ## Usage
 
 lightscore never starts a server for you, it audits whatever is already running.
@@ -48,8 +64,11 @@ claude "fix the issues in lighthouse-report.md"
 
 [`SKILL.md`](SKILL.md) teaches coding agents how to use lightscore, the
 audit → fix → re-audit loop, flag choices, and JSON output for parsing.
-Install it as a skill for Claude Code (and other agents) with
-[skills.sh](https://skills.sh):
+It works with Claude Code, Cursor, Codex, and 60+ other agents via
+[skills.sh](https://www.skills.sh):
+
+- Skill listing: [skills.sh/thatbeautifuldream/lightscore](https://www.skills.sh/thatbeautifuldream/lightscore)
+- Skill page: [auditing-lighthouse-scores](https://www.skills.sh/thatbeautifuldream/lightscore/auditing-lighthouse-scores)
 
 ```
 npx skills add thatbeautifuldream/lightscore
